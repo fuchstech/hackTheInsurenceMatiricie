@@ -1,0 +1,21 @@
+{
+	"nodes":[
+		{"id":"cdfa9bcf523b1766","type":"text","text":"     Matiricie Sigorta","x":-120,"y":-420,"width":250,"height":60,"color":"6"},
+		{"id":"e91bc8e805c94cd1","type":"text","text":"Araç","x":130,"y":-300,"width":250,"height":60},
+		{"id":"b411faed71995d3a","type":"text","text":"\tSağlık","x":-340,"y":-300,"width":250,"height":60},
+		{"id":"35656a661917cbc8","type":"text","text":"     Features","x":640,"y":-420,"width":250,"height":60,"color":"6"},
+		{"id":"fe111bff6ec31ec0","x":486,"y":-294,"width":250,"height":60,"type":"text","text":"Poliçe Tarama ve sorgu"},
+		{"id":"e4dd3938298874bc","x":815,"y":-288,"width":250,"height":60,"type":"text","text":"Araç Hata Kodu Arama"},
+		{"id":"94741c06929f342a","x":1120,"y":-288,"width":250,"height":60,"type":"text","text":"Json Verilerine bak!!"}
+	],
+	"edges":[
+		{"id":"3f6ea9963c5eaadf","fromNode":"cdfa9bcf523b1766","fromSide":"right","toNode":"e91bc8e805c94cd1","toSide":"top"},
+		{"id":"7987c14bcf4f270e","fromNode":"cdfa9bcf523b1766","fromSide":"left","toNode":"b411faed71995d3a","toSide":"top"},
+		{"id":"e8d2fca6c04044df","fromNode":"35656a661917cbc8","fromSide":"bottom","toNode":"fe111bff6ec31ec0","toSide":"top"},
+		{"id":"a88bc7b1655d9bed","fromNode":"35656a661917cbc8","fromSide":"bottom","toNode":"e4dd3938298874bc","toSide":"top"},
+		{"id":"cb00708f2100b0b6","fromNode":"35656a661917cbc8","fromSide":"bottom","toNode":"94741c06929f342a","toSide":"top"},
+		{"id":"6aa8c86702519a36","fromNode":"fe111bff6ec31ec0","fromSide":"bottom","toNode":"b411faed71995d3a","toSide":"bottom"},
+		{"id":"3cf25a83b79f40f2","fromNode":"fe111bff6ec31ec0","fromSide":"bottom","toNode":"e91bc8e805c94cd1","toSide":"bottom"},
+		{"id":"2224731347351b61","fromNode":"e4dd3938298874bc","fromSide":"bottom","toNode":"e91bc8e805c94cd1","toSide":"bottom"}
+	]
+}
