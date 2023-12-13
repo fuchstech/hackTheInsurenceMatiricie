@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Giriş Ekranı</title>
+    <style>
+        body {
+            background-color: #f0ecfb;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            width: 350px; /* Genişlik artırıldı */
+            padding: 30px; /* Padding artırıldı */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            color: #a91100;
+        }
+        label {
+            display: block;
+            text-align: left;
+            margin-top: 10px;
+        }
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        input[type="submit"] {
+            background-color: #a91100;
+            color: #fff;
+            width: 100%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .enabiz-button {
+            background-color: #a91100;
+            color: #fff;
+            width: 92%;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Giriş Yap</h2>
+        <form action="giris.php" method="post">
+            <label for="email">E-posta:</label>
+            <input type="email" name="email" id="email" required>
+
+            <label for="sifre">Şifre:</label>
+            <input type="password" name="sifre" id="sifre" required>
+
+            <input type="submit" name="giris" value="Giriş Yap">
+        </form>
+        <br> <hr><br>
+        <a href="https://enabiz.gov.tr/" class="enabiz-button">e-nabız ile Giriş Yap</a>
+        <br> <hr><br>
+        <a href="doktor-girisi.html" class="enabiz-button">Doktor Girişi İçin Tıklayın</a>
+    </div>
+</body>
+</html>

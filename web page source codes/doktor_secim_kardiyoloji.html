@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0ecfb;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            background-color: #a91100;
+            color: #fff;
+            padding: 20px;
+            margin: 0;
+        }
+
+        #container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        select {
+            width: 100%;
+            padding: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            background-color: #fff;
+            border: 1px solid rgb(255, 255, 255);
+            padding: 10px;
+            text-align: center;
+            /* Yazıları ve verileri ortala */
+        }
+
+        th {
+            background-color: #a91100;
+            color: #fff;
+        }
+
+        img {
+            max-width: 80px;
+            height: auto;
+        }
+
+        .doctor-image {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            /* Resimleri ve bağlantıları ortala */
+        }
+
+        .doctor-image a {
+            margin: 0 auto;
+            display: block;
+        }
+
+        .button-column {
+            width: 10%;
+        }
+
+        .button-column button {
+            padding: 5px 10px;
+            background-color: #a91100;;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        .modern-footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #a91100; /* Arka plan rengini düzenleyebilirsiniz. */
+    color: #fff; /* Metin rengini düzenleyebilirsiniz. */
+    padding: 20px;
+}
+
+.footer-column {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    margin: 5px;
+    font-weight: 600;
+}
+
+.footer-column a:hover {
+    color: #66c2ff; /* Fare üzerine gelindiğinde metin rengi */
+}
+    </style>
+    <meta charset="UTF-8">
+    <title>Doktor Arama</title>
+</head>
+
+<body>
+    <h1>Doktor Arama</h1>
+
+    <label for="branchSelect">Branş Seçin:</label>
+    <select id="branchSelect">
+        
+    </select>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ad</th>
+                <th>Soyad</th>
+                <th>Şirket</th>
+                <th>Şehir</th>
+                <th>Profil</th>
+                <th>En Yakın Randevu</th>
+            </tr>
+        </thead>
+        <tbody id="doctorTable">
+        </tbody>
+    </table>
+
+    <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+            // Get the URL parameter "brans"
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedBranch = urlParams.get("brans");
+
+            // If "brans" parameter exists and matches an option value, select it
+            if (selectedBranch) {
+                const branchSelect = document.getElementById("branchSelect");
+                const option = branchSelect.querySelector(`[value="${selectedBranch}"]`);
+                if (option) {
+                    option.selected = true;
+                }
+            }
+        });
+        
+ // Değişkenlerinizi tanımlayın veya uygun bir şekilde güncelleyin
+const url = "https://apihacuser.bulutklinik.com/api/v3/outher/doctorSchedules";
+const headers = {
+    "Authorization": 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiI5YTRiYTA1NC0xNmVjLTRkOTAtOWFlMC01YzM0MDc4OGU2Y2QiLCJqdGkiOiIxNDIwM2Q1NDc4YmNmNTMwMjI3NGU5YmJmM2RjMDhmYWU0ODFiNjk1Njc4YTc0YWExYTYxNGZhM2YxZDJmZjUzNzNhOGY0ZDE3ZjhjMWZjYSIsImlhdCI6IjE2OTc4ODQ4NDEuMDg2OTE3IiwibmJmIjoiMTY5Nzg4NDg0MS4wODY5MjAiLCJleHAiOiIxNzExMDE3NjQxLjA4MjU5MyIsInN1YiI6IjE4Iiwic2NvcGVzIjpbImhhY2thdGhvbiJdfQ.QnvYmyfygo9Z3nwvemXg3MMBotCqfQP4fGLtROu-wOy6An8bCgIXeA9OI6Vu1iHUOfK8SyyhHm02gv5kc7LwaTmtFWaSqXiyzevRpSnDblA-FWi01XN30jqIautCHVJzykgntxR1XUd28EXrp6OBqokJp6iwt_WGfFPFV2_wabAQ0jEh-JnAjClp4zSQ4_GpOWw_Ha83dFQTtJYdYwP5Wbt_FxlWPyfCDl5djXRRQk93on8whknGvUTQ4sgZVNdjKuHB2ZP6R97nRXG4QXnotwjEZq44deAcPZe-ffF966vHaWMH77qsr3fmjXKFOFM_anBOv7qN5HEBLO4yUeHs37OINOplGwYHQhthPe84QK-80BvD-Lt0o8oiJRpmzrbNEh0g0m7Dx64hiARc10hY3Qy9iIep_OeoFZjx-GXvz2w55y4rtPLAUhiK9rZ1ZzWuMqO3ziozHlIcGyyv9bP0yZpkf3dQUd1dB07NRx2Y2_JmIhQSiypUCke0z19uc8Akwb_FivQzRDWlYopX3k8TiY2VSwp0jKaquZ-i4SeCi_p0jvj_393VrkCLGaOgSF34A5aolgpflq6ECk9PXkFQr909oubp2I43FXU6SRf59UYiXHsIrBzA-T2NWePboHUSdUGSOtbFwf1CirH4x4AT59VtwP3zpWIIWS6xpIXiK2c',
+    "Content-Type": "application/json",
+    "Accept": "application/json",
+};
+const body = {
+    "doctorId": 204,
+    "scheduleDate": "2023-12-23",
+    "scheduleStep": "1",
+    "schedulePage": "1"
+};
+
+fetch(url, {
+    method: "POST",
+    headers: headers,
+    body: JSON.stringify(body),
+})
+.then(response => response.json())
+.then(data => {
+    // İşlem sonuçlarına göre gerekli işlemleri burada yapın
+    if (data.resultType === 0 && data.errorType === 0 && data.successMessage === "İşlem başarılı oldu.") {
+        console.log(data);
+
+    } else {
+        console.error("İşlem başarısız. Hata mesajı: " + data.errorMessage);
+    }
+})
+.catch(error => {
+    console.error("Hata oluştu: " + error);
+});
+
+
+
+
+
+        const apiResponse = {
+            "resultType": 0,
+            "errorType": 0,
+            "errorMessage": "",
+            "successMessage": "İşlem başarılı oldu.",
+            "data":
+
+            {
+                "totalCount": 289,
+                "totalPage": 29,
+                "currentPage": 1,
+                "limitPerPage": 10,
+                "list": [
+                  
+                    {
+                        "order": "0",
+                        "user_id": "158484",
+                        "doctor_id": "158484",
+                        "title": "Dr.",
+                        "name": "SÜMEYYE",
+                        "surname": "FİKİRTAŞ",
+                        "company_name": "Kalp Damar Merkezi",
+                        "city_name": "İstanbul",
+                        "loc_lat": "39.22553300",
+                        "loc_lng": "35.20628700",
+                        "doctor_biography": "<p>KARDİYOLOJİ</p>\r\n",
+                        "branch_name": "KARDİYOLOJİ",
+                        "user_image": "https://bulutklinik-pb.s3.eu-west-1.amazonaws.com/doctors/profile/158484/kUpthsg2KSxc7bXoMYRGLVvO5DT8Jm",
+                        "nearest_slot": "2023-12-23 11:50:00"
+                    
+                    }
+
+                ]
+
+            }
+
+
+        };
+
+        const branchSelect = document.getElementById("branchSelect");
+        const doctorTable = document.getElementById("doctorTable");
+
+        const branches = [...new Set(apiResponse.data.list.map(doctor => doctor.branch_name))];
+        branches.forEach(branch => {
+            const option = document.createElement("option");
+            option.text = branch;
+            branchSelect.add(option);
+        });
+        branchSelect.value = "KARDİYOLOJİ";
+        const label = document.createElement("label");
+label.id = "resultLabel";
+document.body.appendChild(label);
+
+function createLabelMessage(message) {
+    const resultLabel = document.getElementById("resultLabel");
+    resultLabel.textContent = message;
+}
+
+function sendDoctorIdToServer(doctorId) {
+    // Sunucuya doktor ID'sini gönderme işlemini burada gerçekleştirin.
+    // Örneğin, bir fetch isteği ile sunucuya POST isteği yapabilirsiniz.
+    // Bu örnekte bir yerine işlem başarılı bir şekilde gerçekleştiğini varsayalım.
+    const successMessage = "Randevu oluşturuldu. Doktor ID: " + doctorId;
+    
+
+    createLabelMessage(successMessage);
+    const newLabel = document.createElement("label");
+  
+   
+}
+const paymentLinkMessage = "Ödeme sayfasına gitmek için tıklayın";
+const paymentLink = document.createElement("a");
+paymentLink.style.display = "block";
+paymentLink.style.textAlign = "center";
+
+paymentLink.textContent = paymentLinkMessage;
+paymentLink.href = "odeme.html"; // Ödeme sayfasının gerçek bağlantısını ekleyin
+paymentLink.target = "_blank"; // Yeni sekmede açmak için
+
+document.body.appendChild(paymentLink);
+
+        function updateDoctorDetails(data) {
+            const doctorDetails = document.getElementById("doctorDetails");
+            doctorDetails.style.display = "block"; // Detayları göster
+
+            // Detayları güncelle
+            document.getElementById("name").textContent = data.name;
+            document.getElementById("surname").textContent = data.surname;
+            document.getElementById("phone").textContent = data.phone;
+            document.getElementById("email").textContent = data.email;
+            document.getElementById("birthdate").textContent = data.birthdate;
+            document.getElementById("identityNo").textContent = data.identityNo;
+            document.getElementById("processId").textContent = data.processId;
+            document.getElementById("eventId").textContent = data.eventId;
+            document.getElementById("url").textContent = data.url;
+            document.getElementById("hash").textContent = data.hash;
+        }
+
+
+
+
+
+        function updateDoctorTable() {
+            const selectedBranch = branchSelect.value;
+            const filteredDoctors = apiResponse.data.list.filter(doctor => {
+                return selectedBranch === "" || doctor.branch_name === selectedBranch;
+            });
+
+            doctorTable.innerHTML = "";
+            filteredDoctors.forEach(doctor => {
+                const row = doctorTable.insertRow();
+                const cellName = row.insertCell(0);
+                const cellSurname = row.insertCell(1);
+                const cellCompany = row.insertCell(2);
+                const cellCity = row.insertCell(3);
+                const cellImage = row.insertCell(4);
+                const cellNearestSlot = row.insertCell(5);
+
+                if (doctor.nearest_slot === "Bu ayki tüm randevuları dolu") {
+                    cellNearestSlot.innerHTML = "Tüm randevular bu ay için dolu";
+                } else if (new Date(doctor.nearest_slot).toString() === "Invalid Date") {
+                    cellNearestSlot.innerHTML = "Tüm randevular bu ay için dolu"; // Eğer tarih geçersizse, aynı mesajı göster
+                } else {
+                    const nearestSlotDate = new Date(doctor.nearest_slot);
+                    cellNearestSlot.innerHTML = nearestSlotDate.toLocaleString(); // Tarihi düzgün bir formatta görüntüleme
+                }
+
+
+                const cellButton = row.insertCell(6); // Düğme hücresi ekleniyor
+                cellName.innerHTML = doctor.name;
+                cellSurname.innerHTML = doctor.surname;
+                cellCompany.innerHTML = doctor.company_name;
+                cellCity.innerHTML = doctor.city_name;
+
+                // Doktor resimlerini ve bağlantılarını ekleyin
+                const doctorImage = document.createElement("img");
+                doctorImage.src = doctor.user_image;
+                doctorImage.alt = `${doctor.name} ${doctor.surname}`;
+                const doctorLink = document.createElement("a");
+                doctorLink.href = doctor.user_image;
+                doctorLink.target = "_blank";
+                doctorLink.appendChild(doctorImage);
+                cellImage.appendChild(doctorLink);
+
+                // "Randevu Seç" düğmesi ekleniyor
+                const selectButton = document.createElement("button");
+                if (doctor.nearest_slot === "Bu ayki tüm randevuları dolu") {
+                    selectButton.textContent = "Tüm randevular dolu";
+                    selectButton.disabled = true; // Butonu devre dışı bırak
+                } else {
+                    selectButton.textContent = "Randevu Oluştur";
+                    selectButton.addEventListener("click", () => {
+                        if (doctor.nearest_slot === "Bu ayki tüm randevuları dolu") {
+            createLabelMessage("Tüm randevular bu ay için dolu");
+        } else {
+            sendDoctorIdToServer(doctor.doctor_id);
+        }
+                    });
+                }
+                cellButton.appendChild(selectButton);
+
+            });
+        }
+
+        branchSelect.addEventListener("change", updateDoctorTable);
+
+        updateDoctorTable();
+
+    </script>
+    <footer class="modern-footer">
+   
+        <div class="footer-column">
+            <a href="hakkimizda.html">Hakkımızda</a>
+            <a href="iletisim.html">İletişim</a>
+            <a href="data-security.html">Veri Güvenliği</a>
+        </div>
+        <div class="footer-column">
+            <a href="uyelik-sozlesmesi.html">Üyelik Sözleşmesi</a>
+            <a href="kvkk-policy.html">Hasta Aydınlatma Metni</a>
+            <a href="for-doctor-kvkk-policy.html">Doktor Aydınlatma Metni</a>
+        </div>
+    </footer>
+</body>
+
+</html>
