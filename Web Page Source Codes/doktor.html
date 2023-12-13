@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+
+         /* Renk paleti için stil */
+         .color-palette {
+            width: 200px;
+            height: 20px;
+            left: 25%;
+            background: linear-gradient(to right, green, yellow, red); /* Yeşil, Sarı, Kırmızı paleti */
+            cursor: pointer; /* Farenin şekli el işareti olur */
+            position: relative;
+        }
+
+        /* Sürüklenebilir imleç */
+        .slider {
+            width: 15px;
+            height: 15px;
+            background-color: white;
+            border: 2px solid #333;
+            border-radius: 50%;
+            position: absolute;
+            
+            left: 0;
+            cursor: grab;
+        }
+
+        /* Aciliyet seviyesini gösteren metin */
+        .urgency-level {
+            font-weight: bold;
+        }
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: space-between;
+            background-color: #f0ecfb;
+        }
+
+        .left-section
+        {
+            width: 30%;
+            padding: 20px;
+            border: 1px solid #000;
+            background-color: #fff;
+            font-size: 18px;
+        }
+
+        .middle-section, .right-section {
+            width: 30%;
+            padding: 20px;
+            border: 1px solid #000;
+            background-color: #fff;
+        }
+
+        .orta-div {
+            position: absolute;
+    text-align: center;
+    top: 84%; /* Üst kenarı sayfanın ortasına getir */
+    left: 50%; /* Sol kenarı sayfanın ortasına getir */
+    transform: translate(-50%, -50%); /* Orta noktasını sayfanın ortasına getir */
+    background-color: #fff;
+    width: 400px; /* Genişliği 400 piksel olarak ayarlayabilirsiniz */
+    height: 140px; /* Yüksekliği 300 piksel olarak ayarlayabilirsiniz */
+        }
+
+        .bottom-section {
+            display: flex;
+            justify-content: center;
+            border-top: 1px solid #000;
+            padding: 5px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            background-color: #fff;
+            text-align: center;
+        }
+
+        #gonderButton {
+            background-color: #a91100;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            
+        }
+
+        #gonderButton:hover {
+            background-color: #ff0000;
+        }
+
+        .modern-footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #a91100; /* Arka plan rengini düzenleyebilirsiniz. */
+    color: #fff; /* Metin rengini düzenleyebilirsiniz. */
+    padding: 20px;
+}
+
+.footer-column {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    margin: 5px;
+    font-weight: 600;
+}
+
+.footer-column a:hover {
+    color: #66c2ff; /* Fare üzerine gelindiğinde metin rengini değiştirebilirsiniz. */
+}
+    </style>
+</head>
+
+<body>
+    <div class="left-section">
+        <h2>Hasta Bilgileri</h2>
+        <ul>
+            <li id="yasLi">Yaş: 24 </li>
+            <li id="cinsiyetLi">Cinsiyet: Erkek</li>
+            <li id="boyLi">Boy: 180 cm</li>
+            <li id="kiloLi">Kilo: 70 kg</li>
+            <li id="meslekLi">Meslek: Avukat</li>
+            <li id="evcilHayvanLi">Evcil Hayvan: Yok </li>
+            <li id="alerjiLi">Alerji: Yok</li>
+            <li id="alkolKullanimiLi">Alkol Kullanımı: </li>
+            <li id="sigaraKullanimiLi">Sigara Kullanımı: Evet, haftada 5 paket. </li>
+            <li id="parmaklardaSararma">Parmaklarda Sararma: Hayır</li>
+            <li>Önceki Teşhisler: Astım</li>
+        </ul>
+    </div>
+    <div class="middle-section">
+        <h2>Yaptırılan Tetkikler</h2>
+        <h3>Kan Tahlili</h3>
+        <a href="Kan_Tahlili.pdf" target="_blank">Kan Tahlili Sonuç Dosyası</a>
+        <h3>Akciğer Grafisi</h3>
+        <a href="image.jpg" target="_blank">Akciğer Grafisi Sonuç Dosyası</a>
+        <div>
+            <br><label for="btIste">BT İste</label>
+            <input type="checkbox" id="btIste" name="tetkikType"><br><br>
+            <label for="ekBilgi">Ek Bilgi İste</label>
+            <input type="checkbox" id="ekBilgi" name="tetkikType">
+            <div id="ekBilgiCheckboxes" style="display: none;"><br>
+                <!-- Ek bilgi için checkbox'lar burada eklenebilir -->
+                <label for="haftaliktansiyon">Haftalık Tansiyon Takibi</label>
+                <input type="checkbox" id="haftaliktansiyon" name="ekBilgiCheckbox"><br>
+                <label for="haftalikseker">Haftalık Şeker Takibi</label>
+                <input type="checkbox" id="haftalikseker" name="ekBilgiCheckbox"><br>
+                <label for="24saatlikidrar">24 Saatlik İdrar</label>
+                <input type="checkbox" id="24saatlikidrar" name="ekBilgiCheckbox"><br><br>
+                <label for="other">Diğer:</label>
+                <input type="checkbox" id="checkbox5" name="ekBilgiCheckbox">
+                <input type="text" style="display :none;" id="other" name="other">
+            </div>
+        </div>
+    </div>
+    <div class="right-section">
+        <h2>Olası Teşhisler</h2>
+        <label for="label1">Pnömoni - Doğruluk Oranı: %92.62  </label>
+        <label id="label1"></label>
+      
+        <button id="onayButton">Onay</button>
+        <label id="onayTikIsareti" style="display: none; color: green; font-size: 20px;">✔</label>
+        <label id="onayMetni"></label><br><br>
+        <button id="yuzYuzeTedaviButton">Yüz Yüze Tedavi İsteği</button>
+        <label id="tikIsareti" style="display: none; color: green; font-size: 20px;">✔</label>
+        <label id="yuzYuzeTedaviMetni"></label>
+        <br><br>
+
+        <input type="text" id="ilacIsmi" placeholder="İlaç İsmi">
+        <button id="ilacGirButton">İlaç Ekle</button><br>
+    </div>
+    <div class="orta-div">
+        <button id="YuzYuzeRandevu">Yüz Yüze Randevu</button>
+        <label id="tikIsareti2" style="display: none; color: green; font-size: 20px;">✔</label>
+        <label id="yuzYuzeRandevuMetin"></label><br><br>
+        <button id="OnlineRandevu">Online Randevu</button>
+        <label id="tikIsareti3" style="display: none; color: green; font-size: 20px;">✔</label>
+        <label id="OnlineRandevuMetni"></label><br><br>
+        <div class="color-palette" id="colorPalette">
+            <div class="slider" id="slider"></div>
+        </div>
+        <p>Aciliyet Seviyesi: <span class="urgency-level" id="urgencyLevel">Acil Değil</span></p>
+        <button id="gonderButton">Gönder</button>
+    </div>
+   
+    <script>
+        // Hasta bilgilerini burada set edelim
+        const hastaBilgileri = JSON.parse(localStorage.getItem('hastaBilgileri'));
+        if (hastaBilgileri) {
+            document.getElementById('yasLi').textContent = `Yaş: ${hastaBilgileri.yas}`;
+            document.getElementById('cinsiyetLi').textContent = `Cinsiyet: ${hastaBilgileri.cinsiyet}`;
+            document.getElementById('boyLi').textContent = `Boy: ${hastaBilgileri.boy} cm`;
+            document.getElementById('kiloLi').textContent = `Kilo: ${hastaBilgileri.kilo} kg`;
+            document.getElementById('meslekLi').textContent = `Meslek: ${hastaBilgileri.meslek}`;
+            document.getElementById('evcilHayvanLi').textContent = `Evcil Hayvan: ${hastaBilgileri.evcil_hayvan}`;
+            document.getElementById('alerjiLi').textContent = `Alerji: ${hastaBilgileri.alerji}`;
+            document.getElementById('alkolKullanimiLi').textContent = `Alkol Kullanıyor: ${hastaBilgileri.alkol_kullanimi}`;
+            document.getElementById('sigaraKullanimiLi').textContent = `Sigara Kullanıyor: ${hastaBilgileri.sigara_kullanimi}`;
+        }
+    </script>
+
+    <script>
+        const ekBilgiRadio = document.getElementById("ekBilgi");
+        const ekBilgiCheckboxes = document.getElementById("ekBilgiCheckboxes");
+        const checkbox5 = document.getElementById("checkbox5");
+        const otherTextbox = document.getElementById("other");
+
+        // Ek bilgi radio butonunun başlangıç durumunu kontrol et
+        if (ekBilgiRadio.checked) {
+            ekBilgiCheckboxes.style.display = "block";
+        } else {
+            ekBilgiCheckboxes.style.display = "none";
+        }
+
+        // Ek bilgi radio butonunun değişimini dinle
+        ekBilgiRadio.addEventListener("change", () => {
+            // Radio buton seçiliyse checkboxları göster, değilse gizle
+            ekBilgiCheckboxes.style.display = ekBilgiRadio.checked ? "block" : "none";
+            if (!ekBilgiRadio.checked) {
+                otherTextbox.style.display = "none";
+            }
+        });
+
+        checkbox5.addEventListener("change", () => {
+            // Checkbox5 seçiliyse "other" textbox'ı göster, değilse gizle
+            otherTextbox.style.display = checkbox5.checked ? "block" : "none";
+        });
+
+        const btIsteRadio = document.getElementById("btIste");
+
+       
+    </script>
+
+    <script>
+        const ilacGirButton = document.getElementById("ilacGirButton");
+        const ilacIsmi = document.getElementById("ilacIsmi");
+        const rightSection = document.querySelector(".right-section");
+        const yenilabel = document.createElement("label");
+        
+        for (let i = 0; i < 3; i++) {
+    const yeniIlacTextKutusu = document.createElement("input");
+    yeniIlacTextKutusu.type = "text";
+
+    // Farklı placeholder değerleri eklemek için bir dizi oluşturabilirsiniz
+    const placeholderDizisi = ["İlaç Önerisi: Levofloxacin ", "İlaç Önerisi: Clarithromycin", "İlaç Önerisi: Azithromycin"];
+    
+    // Şu anki döngü sırasına göre uygun placeholder'ı seçin
+    yeniIlacTextKutusu.value = placeholderDizisi[i];
+    
+    const ekleButonu = document.createElement("button");
+    ekleButonu.textContent = "Önerilen İlacı Ekle";
+
+    // Ekle butonuna tıklanırsa ilacTextKutusu'nu sağ taraftaki alana ekleyin
+    ekleButonu.addEventListener("click", () => {
+        const ilacIsmiValue = yeniIlacTextKutusu.value;
+        
+        if (ilacIsmiValue) {
+            // Etiket ve text kutusunu oluşturun
+            const ilacEtiket = document.createElement("label");
+            ilacEtiket.textContent = ilacIsmiValue;
+            
+
+            const ilacTextKutusu = document.createElement("input");
+            ilacTextKutusu.type = "text";
+            ilacTextKutusu.value = ilacIsmiValue;
+            ilacTextKutusu.disabled = true;
+
+            // Boş bir çizgi ekleyin
+            const br = document.createElement("br");
+
+            // Sağ taraftaki alana ekleyin
+            
+            rightSection.appendChild(ilacTextKutusu);
+            rightSection.appendChild(br);
+
+            // Text kutusunu temizleyin
+            yeniIlacTextKutusu.style.display = "none";
+            ekleButonu.style.display ="none";
+            
+        }
+    });
+
+    // Boş bir çizgi ekleyin
+    const br = document.createElement("br");
+
+    // Sağ taraftaki alana ekleyin
+    rightSection.appendChild(yeniIlacTextKutusu);
+    rightSection.appendChild(ekleButonu);
+    rightSection.appendChild(br);
+}
+
+        ilacGirButton.addEventListener("click", () => {
+            const ilacIsmiValue = ilacIsmi.value;
+            if (ilacIsmiValue) {
+                // Etiket ve text kutusunu oluşturun
+                const ilacEtiket = document.createElement("label");
+                ilacEtiket.textContent = ilacIsmiValue;
+                const ilacTextKutusu = document.createElement("input");
+                ilacTextKutusu.type = "text";
+                ilacTextKutusu.value = ilacIsmiValue;
+                ilacTextKutusu.disabled = true;
+
+                // Etiketi ve text kutusunu sağ tarafına ekleyin
+                rightSection.appendChild(ilacTextKutusu);
+
+                // Boş bir çizgi ekleyin
+                const br = document.createElement("br");
+                rightSection.appendChild(br);
+
+                // Text kutusunu temizleyin
+                ilacIsmi.value = "";
+            }
+        });
+    </script>
+  <script>
+    const yuzYuzeTedaviButton = document.getElementById("yuzYuzeTedaviButton");
+    const tikIsareti = document.getElementById("tikIsareti");
+    const yuzYuzeTedaviMetni = document.getElementById("yuzYuzeTedaviMetni");
+
+    yuzYuzeTedaviButton.addEventListener("click", () => {
+        if (tikIsareti.style.display === "none") {
+            tikIsareti.style.display = "inline";
+        } else {
+            tikIsareti.style.display = "none";
+            yuzYuzeTedaviMetni.textContent = "";
+        }
+    });
+</script>
+<script>
+     const yuzYuzeRandevu = document.getElementById("YuzYuzeRandevu");
+        const tikIsareti2 = document.getElementById("tikIsareti2");
+        const yuzYuzeRandevuMetin = document.getElementById("yuzYuzeRandevuMetin");
+
+        yuzYuzeRandevu.addEventListener("click", () => {
+            if (tikIsareti2.style.display === "none") {
+                tikIsareti2.style.display = "inline";
+                tikIsareti3.style.display = "none";
+            } else {
+                tikIsareti2.style.display = "none";
+                yuzYuzeRandevuMetin.textContent = "";
+            }
+        });
+</script>
+
+
+<script>
+    const OnlineRandevu = document.getElementById("OnlineRandevu");
+        const tikIsareti3 = document.getElementById("tikIsareti3");
+        const OnlineRandevuMetni = document.getElementById("OnlineRandevuMetni");
+
+        OnlineRandevu.addEventListener("click", () => {
+            if (tikIsareti3.style.display === "none") {
+                tikIsareti3.style.display = "inline";
+                tikIsareti2.style.display = "none";
+            } else {
+                tikIsareti3.style.display = "none";
+                OnlineRandevuMetni.textContent = "";
+            }
+        });
+</script>
+
+<script>
+    const onayButton = document.getElementById("onayButton");
+    const onayTikIsareti = document.getElementById("onayTikIsareti");
+    const onayMetni = document.getElementById("onayMetni");
+
+    onayButton.addEventListener("click", () => {
+        if (onayTikIsareti.style.display === "none") {
+            onayTikIsareti.style.display = "inline";
+        } else {
+            tikIsareti.style.display = "none";
+            yuzYuzeTedaviMetni.textContent = "";
+        }
+    });
+</script>
+
+
+
+<script>
+    // İmleci sürüklemek için JavaScript
+    const colorPalette = document.getElementById('colorPalette');
+    const slider = document.getElementById('slider');
+    const urgencyLevelText = document.getElementById('urgencyLevel');
+
+    let isDragging = false;
+
+    slider.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        slider.style.cursor = 'grabbing'; // Sürüklendiğinde el işareti
+        e.preventDefault();
+    });
+
+    document.addEventListener('mousemove', (e) => {
+        if (isDragging) {
+            const rect = colorPalette.getBoundingClientRect();
+            const newX = e.clientX - rect.left - slider.clientWidth / 2;
+            if (newX >= 0 && newX <= colorPalette.clientWidth - slider.clientWidth) {
+                slider.style.left = newX + 'px';
+            }
+            updateUrgencyLevel(newX, colorPalette.clientWidth);
+        }
+    });
+
+    document.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            slider.style.cursor = 'grab';
+        }
+    });
+
+    function updateUrgencyLevel(x, paletteWidth) {
+        const percent = x / paletteWidth;
+        if (percent <= 0.2) {
+            urgencyLevelText.textContent = 'Acil Değil';
+        } else if (percent <= 0.4) {
+            urgencyLevelText.textContent = 'Düşük Aciliyetli';
+        } else if (percent <= 0.6) {
+            urgencyLevelText.textContent = 'Orta Aciliyet';
+        } else if (percent <= 0.8) {
+            urgencyLevelText.textContent = 'Yüksek Aciliyet';
+        } else {
+            urgencyLevelText.textContent = 'Çok Yüksek Aciliyet';
+        }
+    }
+
+    
+    const gonderButton = document.getElementById("gonderButton");
+
+gonderButton.addEventListener("click", function() {
+    window.alert("Başarıyla Gönderildi!");
+});
+</script>
+
+</body>
+</html>

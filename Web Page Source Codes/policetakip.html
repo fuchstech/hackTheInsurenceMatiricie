@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Poliçe Dosyasını Takip Et</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 40px;
+    table-layout:auto; /* Tablo genişliği sabit */
+    margin-left: 0; /* Tabloyu sola daya */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    text-align: left;
+    padding: 8px;
+    overflow: hidden;
+    white-space: nowrap; /* Sütun içindeki metni bir satıra sığdır */
+   
+}
+
+/* Türkçe sütun isimleri için başlık stil ayarı */
+th {
+    background-color: #a91100;
+    color: #fff;
+    text-align: center;
+}
+
+/* Tablonun içeriğini ortala */
+td {
+    text-align: center;
+}
+
+/* Mobil cihazlar için stil kuralları */
+@media only screen and (max-width: 600px) {
+    table, th, td {
+        font-size: 14px;
+    }
+}
+
+#errorMessage {
+    text-align: center;
+    margin-top: 20px; /* İstenilen boşluk miktarı */
+    color: red; /* Hata mesajının rengi, istediğiniz rengi seçebilirsiniz */
+}
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav>
+            <ul>
+                <li><a href="anasayfa.html">Anasayfa</a></li>
+                <li><a href="policetakip.html">Poliçe Dosya Takip</a></li>
+                <li><a href="arabamdanevar.html">Arabamda Ne Var?</a></li>
+                <li><a href="nereyetamir.html">Anlaşmalı Servis Bul</a></li>
+                <li><a href="sanalasistan.html">Sanal Asistan</a></li>
+                <li><a href="sagligim.html">Sağlığım</a></li>
+                <li><a href="hangisigorta.html">Hangi Sigorta</a></li>
+                <li><a href="iletisim2.html">İletişim</a></li>
+                <li><a href="index.html">Çıkış Yap</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1 class="section-title">Poliçe Dosyasını Takip Et</h1>
+
+    <div class="container">
+       
+        <label for="claimNumber">Bu sayfa üzerinden dosyanızın anlık durumunu takip edebilirsiniz. <br><br>Lütfen dosya numaranızı giriniz </label>
+        <input type="text" id="claimNumber" placeholder="Dosya Numarası">
+        <button onclick="searchClaim()" class="cta-button">Ara</button>
+    </div>
+        <div id="result">
+           <center> Sonuçlar burada gözükecek.</center>
+        </div>
+   
+
+    <script>
+        const sampleData = [
+            {
+                "claims": [
+                    {
+                        "dosyaData": {
+                            "claimID": "13DE79B6E7CA1110",
+                            "claimNumber": "15197918230001",
+                            "policyNumber": "1519791823",
+                            "claimStatus": "OP",
+                            "reOpenDate": "Yeniden açılmadı.",
+                            "closedDate": "Henüz kapanmadı.",
+                            "lob": {
+                                "code": "LB01",
+                                "shortDescription": "OTOMOBİL",
+                                "longDescription": "OTOMOBİL"
+                            },
+                            "entryChannel": {
+                                "code": "DESK",
+                                "shortDescription": "DESKTOP",
+                                "longDescription": "DESKTOP"
+                            },
+                            "claimDate": "2023-11-16T18:28:38",
+                            "fraudScore": 0,
+                            "fraudColor": "YEŞİL",
+                            "insuredCountry": {
+                                "code": "500",
+                                "shortDescription": "TR",
+                                "longDescription": "TÜRKİYE"
+                            },
+                            "isTotalLoss": "HAYIR",
+                            "source": "2",
+                            "claimFileCloseReason": {},
+                            "totalPaymentAmount": 0,
+                            "isNewLimitFlow": false,
+                            "isTurbojetPaymentFlow": "HAYIR",
+                            "recourseCompletionDate": "0001-01-01T00:00:00"
+                        },
+                        "policeData": {
+                            "policyID": "56A689CA2089028C",
+                            "policyCreatedDate": "2023-11-01T12:00:00",
+                            "effectiveDate": "2023-11-01T00:00:00",
+                            "expirationDate": "2024-11-01T12:00:59",
+                            "policyType": {
+                                "code": "701",
+                                "shortDescription": "MOT. KARA TAŞIT. BİRLEİŞK (701)",
+                                "longDescription": "MOTORLU KARA TAŞITLARI BİRLEŞİK KASKO SİG. POL. (701)"
+                            },
+                            "encumbrance": {
+                                "code": "YES",
+                                "shortDescription": "EVET",
+                                "longDescription": "EVET"
+                            },
+                            "insuredName": "İsim Soyisim",
+                            "customerNumber": "999999999",
+                            "policyNumber": "1519791823",
+                            "renewalNumber": "00",
+                            "endorsementNumber": "00",
+                            "brandInsuranceCode": "701",
+                            "customerScore": "0",
+                            "customerSegment": {
+                                "code": "0",
+                                "shortDescription": "Tanımsız",
+                                "longDescription": "Tanımsız"
+                            },
+                            "rizikoType": {
+                                "code": "2",
+                                "shortDescription": "TİCARİ",
+                                "longDescription": "TİCARİ"
+                            },
+                            "businessActivityType": {
+                                "code": "\t"
+                            }
+                        },
+                        "hasarData": {
+                            "lossID": "957C137FDEB1CBD7",
+                            "subLossType": {
+                                "code": "717",
+                                "shortDescription": "Motorlu Kara Taşıtları - Kasko",
+                                "longDescription": "Motorlu Kara Taşıtları - Kasko"
+                            },
+                            "resultOfLoss": {
+                                "code": "11111",
+                                "shortDescription": "Maddi - Kısmi Hasar",
+                                "longDescription": "Maddi - Kısmi Hasar"
+                            },
+                            "reasonOfLoss": {
+                                "code": "22222",
+                                "shortDescription": "Çarpma",
+                                "longDescription": "Çarpma"
+                            },
+                            "lossDate": "2023-11-10T00:00:00",
+                            "reportedDate": "2023-11-16T18:28:38",
+                            "lossAddress": {
+                                "country": {
+                                    "code": "500",
+                                    "shortDescription": "TR",
+                                    "longDescription": "TÜRKİYE"
+                                },
+                                "city": {
+                                    "code": "34",
+                                    "shortDescription": "İSTANBUL",
+                                    "longDescription": "İSTANBUL"
+                                },
+                                "freeCity": "34",
+                                "county": {
+                                    "code": "340034",
+                                    "shortDescription": "ATAŞEHİR",
+                                    "longDescription": "ATAŞEHİR"
+                                },
+                                "freeCounty": "340034",
+                                "building": "\t",
+                                "doorNumber": "\t",
+                                "recommendedType": "LAND"
+                            },
+                            "lossAddressDescription": "\t",
+                            "lossType": {
+                                "code": "14",
+                                "shortDescription": "OTOMOBİL",
+                                "longDescription": "OTOMOBİL"
+                            },
+                            "appealType": {
+                                "code": "A",
+                                "shortDescription": "Kaza Tespit Tutanaklı",
+                                "longDescription": "Kaza Tespit Tutanaklı"
+                            },
+                            "lossDescription": "test",
+                            "liabilityPercentage": 0,
+                            "epidemicReleaseDate": "0001-01-01T00:00:00",
+                            "pandemicAnnouncementDate": "0001-01-01T00:00:00",
+                            "dateDeathTollExceeded": "0001-01-01T00:00:00",
+                            "hasDynamicQuestions": false,
+                            "claimType": {
+                                "code": "M",
+                                "shortDescription": "Maddi",
+                                "longDescription": "Maddi Hasar"
+                            },
+                            "mbCode": {
+                                "code": "M",
+                                "shortDescription": "Maddi Hasar",
+                                "longDescription": "Maddi Hasar"
+                            },
+                            "demandDate": "1800-01-01T00:00:00"
+                        },
+                        "performers": [],
+                        "hasarKalemleri": [
+                            {
+                                "lineID": "F3B95C4CDF025507",
+                                "coverID": "2A5B4DDE3302FA56",
+                                "creatorSupplierID": "USER43",
+                                "resultOfLoss": {
+                                    "code": "11111",
+                                    "shortDescription": "Maddi - Kısmi Hasar",
+                                    "longDescription": "Maddi - Kısmi Hasar"
+                                },
+                                "reasonOfLoss": {
+                                    "code": "22222",
+                                    "shortDescription": "Çarpma",
+                                    "longDescription": "Çarpma"
+                                },
+                                "cover": {
+                                    "code": "3333333",
+                                    "shortDescription": "Çarpma",
+                                    "longDescription": "Çarpma"
+                                },
+                                "estimatedLossAmount": 20000,
+                                "isInvoicedClaim": false,
+                                "isJetLine": false,
+                                "isTotalLoss": "HAYIR",
+                                "jetLimit": 0,
+                                "jetStandbyDayCount": 0,
+                                "lineNumber": 1,
+                                "claimantInsInvolvementID": "DC8A718A52E1BCAD",
+                                "status": {
+                                    "code": "05",
+                                    "shortDescription": "AÇIK",
+                                    "longDescription": "AÇIK"
+                                },
+                                "claimantNumber": 1,
+                                "mbCode": "M",
+                                "documentReferences": [],
+                                "isLegalRelshp": false,
+                                "closeReason": {
+                                    "code": "\t"
+                                },
+                                "hasLiability": false,
+                                "claimantData": {
+                                    "identityNumber": "55555555555",
+                                    "fullName": "İsim Soyisim"
+                                },
+                                "appointmentData": [
+                                    {
+                                        "id": "6E8E82EA4A06A76A",
+                                        "lineID": "F3B95C4CDF025507",
+                                        "supplierID": "BEFAE8B398F53E87",
+                                        "reasonOfInvestigationReport": "IHARA",
+                                        "medicalAssignDetail": "\t",
+                                        "status": {
+                                            "code": "REQS",
+                                            "shortDescription": "TALEP EDİLDİ",
+                                            "longDescription": "TALEP EDİLDİ"
+                                        },
+                                        "appointmentDate": "0001-01-01T00:00:00",
+                                        "isSupplierDeleted": false
+                                    },
+                                    {
+                                        "id": "B877FF2BA123C5FD",
+                                        "lineID": "F3B95C4CDF025507",
+                                        "supplierID": "UFV1KPWYMSK8RCKZ",
+                                        "reasonOfInvestigationReport": "IHARA,AKCALC",
+                                        "medicalAssignDetail": "\t",
+                                        "status": {
+                                            "code": "REQS",
+                                            "shortDescription": "TALEP EDİLDİ",
+                                            "longDescription": "TALEP EDİLDİ"
+                                        },
+                                        "appointmentDate": "0001-01-01T00:00:00",
+                                        "isSupplierDeleted": false
+                                    }
+                                ]
+                            }
+                        ],
+                        "hasarItems": [],
+                        "dosyaNotlari": [
+                            {
+                                "id": "C08C50ADBA9B1FB1",
+                                "creationDate": "2023-11-16T18:30:53",
+                                "category": {
+                                    "code": "CC"
+                                },
+                                "subcategory": {
+                                    "code": "1"
+                                },
+                                "accessType": "GEN",
+                                "isSystemGenerated": false,
+                                "importanceLevel": "C",
+                                "relation": {
+                                    "claimID": "13DE79B6E7CA1110",
+                                    "lineID": "\t",
+                                    "isTender": false
+                                },
+                                "details": [
+                                    {
+                                        "id": "FF1F5949922DE8D0",
+                                        "creationDate": "2023-11-16T18:30:53",
+                                        "authorID": "CDCC861712260F12",
+                                        "title": "İhbar Föyü",
+                                        "text": "İhbar Föyü",
+                                        "attachments": [
+                                            {
+                                                "id": "FBEBC05C4C6DC29A",
+                                                "fileName": "İhbar Föyü.pdf",
+                                                "cdnType": "CM",
+                                                "cdnId": "202311161830_2fa3bdf8-31c5-4feb-aaf2-39495ce77f0b"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "altStatData": [
+                            {
+                                "taskTemplate": "Dosya İncelemede - Eksper Ataması Bekleniyor",
+                                "taskDate": "2023-11-16T19:15:53"
+                            },
+                            {
+                                "taskTemplate": "Dosya Incelemede",
+                                "taskDate": "2023-11-16T19:14:35"
+                            },
+                            {
+                                "taskTemplate": "Kusur Oranı Beklenmektedir",
+                                "taskDate": "2023-11-16T19:13:11"
+                            }
+                        ]
+                    },
+                    {
+                        "dosyaData": {
+                            "claimID": "80B8BE72AFC28DCB",
+                            "claimNumber": "15197918230002",
+                            "policyNumber": "1519791823",
+                            "claimStatus": "OP",
+                            "reOpenDate": "Yeniden açılmadı.",
+                            "closedDate": "Henüz kapanmadı.",
+                            "lob": {
+                                "code": "LB01",
+                                "shortDescription": "OTOMOBİL",
+                                "longDescription": "OTOMOBİL"
+                            },
+                            "entryChannel": {
+                                "code": "DESK",
+                                "shortDescription": "DESKTOP",
+                                "longDescription": "DESKTOP"
+                            },
+                            "claimDate": "2023-11-17T13:49:32",
+                            "fraudScore": 0,
+                            "fraudColor": "YEŞİL",
+                            "insuredCountry": {
+                                "code": "500",
+                                "shortDescription": "TR",
+                                "longDescription": "TÜRKİYE"
+                            },
+                            "isTotalLoss": "hayır",
+                            "source": "2",
+                            "claimFileCloseReason": {},
+                            "totalPaymentAmount": 1750,
+                            "isNewLimitFlow": false,
+                            "isTurbojetPaymentFlow": "HAYIR",
+                            "recourseCompletionDate": "Henüz Tamamlanmadı."
+                        },
+                        "policeData": {
+                            "policyID": "1B051A0ED51896B5",
+                            "policyCreatedDate": "2023-11-01T12:00:00",
+                            "effectiveDate": "2023-11-01T00:00:00",
+                            "expirationDate": "2024-11-01T12:00:59",
+                            "policyType": {
+                                "code": "701",
+                                "shortDescription": "MOT. KARA TAŞIT. BİRLEİŞK (701)",
+                                "longDescription": "MOTORLU KARA TAŞITLARI BİRLEŞİK KASKO SİG. POL. (701)"
+                            },
+                            "encumbrance": {
+                                "code": "YES",
+                                "shortDescription": "EVET",
+                                "longDescription": "EVET"
+                            },
+                            "insuredName": "İsim Soyisim",
+                            "customerNumber": "222222222",
+                            "policyNumber": "1519791823",
+                            "renewalNumber": "00",
+                            "endorsementNumber": "00",
+                            "brandInsuranceCode": "701",
+                            "customerScore": "0",
+                            "customerSegment": {
+                                "code": "0",
+                                "shortDescription": "Tanımsız",
+                                "longDescription": "Tanımsız"
+                            }
+                        },
+                        "hasarData": {
+                            "lossID": "6EB882594FD714F0",
+                            "subLossType": {
+                                "code": "717",
+                                "shortDescription": "Motorlu Kara Taşıtları - Kasko",
+                                "longDescription": "Motorlu Kara Taşıtları - Kasko"
+                            },
+                            "resultOfLoss": {
+                                "code": "11111",
+                                "shortDescription": "Maddi - Kısmi Hasar",
+                                "longDescription": "Maddi - Kısmi Hasar"
+                            },
+                            "reasonOfLoss": {
+                                "code": "22222",
+                                "shortDescription": "Çarpma",
+                                "longDescription": "Çarpma"
+                            },
+                            "lossDate": "2023-11-17T00:00:00",
+                            "reportedDate": "2023-11-17T13:49:32",
+                            "lossAddress": {
+                                "country": {
+                                    "code": "500",
+                                    "shortDescription": "TR",
+                                    "longDescription": "TÜRKİYE"
+                                },
+                                "city": {
+                                    "code": "34",
+                                    "shortDescription": "İSTANBUL",
+                                    "longDescription": "İSTANBUL"
+                                },
+                                "freeCity": "34",
+                                "county": {
+                                    "code": "340001",
+                                    "shortDescription": "ADALAR",
+                                    "longDescription": "ADALAR"
+                                },
+                                "freeCounty": "340001",
+                                "building": "\t",
+                                "doorNumber": "\t",
+                                "recommendedType": "LAND"
+                            },
+                            "lossAddressDescription": "\t",
+                            "lossType": {
+                                "code": "14",
+                                "shortDescription": "OTOMOBİL",
+                                "longDescription": "OTOMOBİL"
+                            },
+                            "appealType": {
+                                "code": "D",
+                                "shortDescription": "Beyanlı",
+                                "longDescription": "Beyanlı"
+                            },
+                            "agreedAccidentReportNo": "0",
+                            "lossDescription": "test",
+                            "liabilityPercentage": 0,
+                            "epidemicReleaseDate": "0001-01-01T00:00:00",
+                            "pandemicAnnouncementDate": "0001-01-01T00:00:00",
+                            "dateDeathTollExceeded": "0001-01-01T00:00:00",
+                            "hasDynamicQuestions": false,
+                            "claimType": {
+                                "code": "M",
+                                "shortDescription": "Maddi",
+                                "longDescription": "Maddi Hasar"
+                            },
+                            "mbCode": {
+                                "code": "M",
+                                "shortDescription": "Maddi Hasar",
+                                "longDescription": "Maddi Hasar"
+                            },
+                            "demandDate": "1800-01-01T00:00:00"
+                        },
+                        "performers": [],
+                        "hasarKalemleri": [
+                            {
+                                "lineID": "48560496F9D88E8F",
+                                "coverID": "D9DAE18BCEEA9A0D",
+                                "creatorSupplierID": "USER43",
+                                "resultOfLoss": {
+                                    "code": "11111",
+                                    "shortDescription": "Maddi - Kısmi Hasar",
+                                    "longDescription": "Maddi - Kısmi Hasar"
+                                },
+                                "reasonOfLoss": {
+                                    "code": "22222",
+                                    "shortDescription": "Çarpma",
+                                    "longDescription": "Çarpma"
+                                },
+                                "cover": {
+                                    "code": "3333333",
+                                    "shortDescription": "Çarpma",
+                                    "longDescription": "Çarpma"
+                                },
+                                "estimatedLossAmount": 10000,
+                                "isInvoicedClaim": false,
+                                "isJetLine": false,
+                                "isTotalLoss": "HAYIR",
+                                "jetLimit": 0,
+                                "jetStandbyDayCount": 0,
+                                "lineNumber": 1,
+                                "claimantInsInvolvementID": "332209BEB039EAF7",
+                                "status": {
+                                    "code": "05",
+                                    "shortDescription": "AÇIK",
+                                    "longDescription": "AÇIK"
+                                },
+                                "claimantNumber": 1,
+                                "mbCode": "M",
+                                "estimatedRepairTime": 1,
+                                "documentReferences": [],
+                                "isLegalRelshp": false,
+                                "closeReason": {
+                                    "code": "\t"
+                                },
+                                "hasLiability": true,
+                                "claimantData": {
+                                    "identityNumber": "55555555555",
+                                    "fullName": "İsim Soyisim"
+                                },
+                                "appointmentData": [
+                                    {
+                                        "id": "56EF9FB9AC2372EC",
+                                        "lineID": "48560496F9D88E8F",
+                                        "supplierID": "QMNK2GQSDUCXUTM9",
+                                        "reasonOfInvestigationReport": "\t",
+                                        "medicalAssignDetail": "\t",
+                                        "status": {
+                                            "code": "CONF",
+                                            "shortDescription": "ONAYLANDI",
+                                            "longDescription": "ONAYLANDI"
+                                        },
+                                        "appointmentDate": "2023-11-17T00:00:00",
+                                        "isSupplierDeleted": false
+                                    }
+                                ]
+                            }
+                        ],
+                        "hasarItems": [],
+                        "dosyaNotlari": [
+                            {
+                                "id": "1F57A6E2434B35C0",
+                                "creationDate": "2023-11-17T15:13:43",
+                                "category": {
+                                    "code": "MKTP",
+                                    "shortDescription": "MEKTUP",
+                                    "longDescription": "MEKTUP"
+                                },
+                                "subcategory": {
+                                    "code": "RUCUMKTP",
+                                    "shortDescription": "RÜCU MEKTUBU",
+                                    "longDescription": "RÜCU MEKTUBU"
+                                },
+                                "accessType": "COM",
+                                "isSystemGenerated": false,
+                                "importanceLevel": "M",
+                                "relation": {
+                                    "claimID": "80B8BE72AFC28DCB",
+                                    "lineID": "\t",
+                                    "isTender": false
+                                },
+                                "details": [
+                                    {
+                                        "id": "5CD66565F862DAF0",
+                                        "creationDate": "2023-11-17T15:13:43",
+                                        "authorID": "CDCC861712260F12",
+                                        "title": "Sigorta Şirketlerine Rücu (Trafik ve İ.M.M)",
+                                        "text": "Sigorta Şirketlerine Rücu (Trafik ve İ.M.M)",
+                                        "attachments": [
+                                            {
+                                                "id": "A560FCFFF1F6B212",
+                                                "fileName": "Sigorta Şirketlerine Rücu (Trafik ve İ.M.M)-15197918230002.PDF",
+                                                "cdnType": "CM",
+                                                "cdnId": "202311171513_c7c7f1bc-e730-1111-ac84-73c95188329b"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "2B48E17118B48E98",
+                                "creationDate": "2023-11-17T14:12:41",
+                                "category": {
+                                    "code": "REPRT",
+                                    "shortDescription": "RAPOR",
+                                    "longDescription": "RAPOR"
+                                },
+                                "subcategory": {
+                                    "code": "ARO",
+                                    "shortDescription": "EKSPER RAPORU",
+                                    "longDescription": "EKSPER RAPORU"
+                                },
+                                "accessType": "COM",
+                                "isSystemGenerated": false,
+                                "importanceLevel": "H",
+                                "relation": {
+                                    "claimID": "80B8BE72AFC28DCB",
+                                    "lineID": "\t",
+                                    "isTender": false
+                                },
+                                "details": [
+                                    {
+                                        "id": "B70401FF1EF4DCA8",
+                                        "creationDate": "2023-11-17T14:12:41",
+                                        "authorID": "CCS-SYSTEM",
+                                        "title": "İsim Soyisim,1000508",
+                                        "text": "İsim Soyisim,1000508",
+                                        "attachments": [
+                                            {
+                                                "id": "6B1FF386F7E38DA1",
+                                                "fileName": "eksp.pdf",
+                                                "cdnType": "CM",
+                                                "cdnId": "202311171412_7d11d0de-4c9b-1111-bb10-f0506289da7c"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "85E0F862672C3A2B",
+                                "creationDate": "2023-11-17T14:11:45",
+                                "category": {
+                                    "code": "CLMHN",
+                                    "shortDescription": "HASAR İNCELEME",
+                                    "longDescription": "HASAR İNCELEME"
+                                },
+                                "subcategory": {
+                                    "code": "PHG",
+                                    "shortDescription": "FOTOĞRAF",
+                                    "longDescription": "FOTOĞRAF"
+                                },
+                                "accessType": "GEN",
+                                "isSystemGenerated": false,
+                                "importanceLevel": "H",
+                                "relation": {
+                                    "claimID": "80B8BE72AFC28DCB",
+                                    "lineID": "48560496F9D88E8F",
+                                    "isTender": true
+                                },
+                                "details": [
+                                    {
+                                        "id": "1816C22CFB18F2BF",
+                                        "creationDate": "2023-11-17T14:11:45",
+                                        "authorID": "CCS-SYSTEM",
+                                        "title": "1111111-HASAR İNCELEME-FOTOĞRAF",
+                                        "text": "1111111-HASAR İNCELEME-FOTOĞRAF",
+                                        "attachments": [
+                                            {
+                                                "id": "D27B45FA9306F900",
+                                                "fileName": "x51043972535vlx.jpg",
+                                                "cdnType": "CM",
+                                                "cdnId": "202311171409_08930e5e-262e-1111-b4da-4bb7e61f5d36"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "8FA9632DF0402F15",
+                                "creationDate": "2023-11-17T14:11:45",
+                                "category": {
+                                    "code": "CLMHN",
+                                    "shortDescription": "HASAR İNCELEME",
+                                    "longDescription": "HASAR İNCELEME"
+                                },
+                                "subcategory": {
+                                    "code": "PHG",
+                                    "shortDescription": "FOTOĞRAF",
+                                    "longDescription": "FOTOĞRAF"
+                                },
+                                "accessType": "GEN",
+                                "isSystemGenerated": false,
+                                "importanceLevel": "H",
+                                "relation": {
+                                    "claimID": "80B8BE72AFC28DCB",
+                                    "lineID": "48560496F9D88E8F",
+                                    "isTender": true
+                                },
+                                "details": [
+                                    {
+                                        "id": "AE8A8264250651A8",
+                                        "creationDate": "2023-11-17T14:11:45",
+                                        "authorID": "CCS-SYSTEM",
+                                        "title": "1111111-HASAR İNCELEME-FOTOĞRAF",
+                                        "text": "1111111-HASAR İNCELEME-FOTOĞRAF",
+                                        "attachments": [
+                                            {
+                                                "id": "91DA8BE1ED2E375E",
+                                                "fileName": "x51043972535vlx.jpg",
+                                                "cdnType": "CM",
+                                                "cdnId": "202311171409_e61cddf0-b8ba-1111-ba7e-dd0d2528562b"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            },
+                            {
+                                "id": "FEF8CB784CF17E09",
+                                "creationDate": "2023-11-17T15:58:53",
+                                "category": {
+                                    "code": "MKTP",
+                                    "shortDescription": "MEKTUP",
+                                    "longDescription": "MEKTUP"
+                                },
+                                "subcategory": {
+                                    "code": "RUCUMKTP",
+                                    "shortDescription": "RÜCU MEKTUBU",
+                                    "longDescription": "RÜCU MEKTUBU"
+                                },
+                                "accessType": "COM",
+                                "isSystemGenerated": false,
+                                "importanceLevel": "M",
+                                "relation": {
+                                    "claimID": "80B8BE72AFC28DCB",
+                                    "lineID": "\t",
+                                    "isTender": false
+                                },
+                                "details": [
+                                    {
+                                        "id": "E270B10E84E54EA0",
+                                        "creationDate": "2023-11-17T15:58:53",
+                                        "authorID": "CDCC861712260F12",
+                                        "title": "Sigorta Şirketlerinden Ek Ödeme İsteme",
+                                        "text": "Sigorta Şirketlerinden Ek Ödeme İsteme",
+                                        "attachments": [
+                                            {
+                                                "id": "F95F47E17F292BB5",
+                                                "fileName": "Sigorta Şirketlerinden Ek Ödeme İsteme-15197918230002.PDF",
+                                                "cdnType": "CM",
+                                                "cdnId": "202311171558_96547674-c9ab-1111-886e-00fbafef12c3"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ],
+                        "altStatData": [
+                            {
+                                "taskTemplate": "Rücu İncelemede-Ek/Ön Ödeme",
+                                "taskDate": "2023-11-17T15:59:56"
+                            },
+                            {
+                                "taskTemplate": "Rücu İncelemede",
+                                "taskDate": "2023-11-17T15:59:56"
+                            },
+                            {
+                                "taskTemplate": "Ek Ödeme Gönderilmİştir",
+                                "taskDate": "2023-11-17T15:54:44"
+                            },
+                            {
+                                "taskTemplate": "Rücu İncelemede-Ek/Ön Ödeme",
+                                "taskDate": "2023-11-17T15:18:53"
+                            },
+                            {
+                                "taskTemplate": "Rücu İncelemede",
+                                "taskDate": "2023-11-17T15:18:53"
+                            },
+                            {
+                                "taskTemplate": "Rücu İncelemede-Ek/Ön Ödeme",
+                                "taskDate": "2023-11-17T15:13:40"
+                            },
+                            {
+                                "taskTemplate": "Rücu İncelemede",
+                                "taskDate": "2023-11-17T15:13:40"
+                            },
+                            {
+                                "taskTemplate": "Ek Ödeme Gönderilmİştir",
+                                "taskDate": "2023-11-17T14:31:23"
+                            },
+                            {
+                                "taskTemplate": "Dosya İncelemede - Eksper Son Raporu Geldi",
+                                "taskDate": "2023-11-17T14:31:21"
+                            },
+                            {
+                                "taskTemplate": "Dosya İncelemede - Eksper Raporu Bekleniyor",
+                                "taskDate": "2023-11-17T13:56:51"
+                            },
+                            {
+                                "taskTemplate": "Dosya İncelemede - Eksper Atama Kabulü Bekleniyor",
+                                "taskDate": "2023-11-17T13:55:48"
+                            },
+                            {
+                                "taskTemplate": "Dosya İncelemede - Eksper Ataması Bekleniyor",
+                                "taskDate": "2023-11-17T13:54:20"
+                            },
+                            {
+                                "taskTemplate": "Dosya Incelemede",
+                                "taskDate": "2023-11-17T13:53:15"
+                            },
+                            {
+                                "taskTemplate": "Kusur Oranı Beklenmektedir",
+                                "taskDate": "2023-11-17T13:51:12"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        function findClaim(claimNumber) {
+            return sampleData.flatMap(item => item.claims).find(claim => claim.dosyaData.claimNumber === claimNumber);
+        }
+
+        function displayResult(claim) {
+            let result = document.getElementById("result");
+            result.innerHTML = "";
+
+            if (claim) {
+                let table = document.createElement("table");
+                let keys = ["claimID", "claimNumber", "policyNumber", "claimStatus", "reOpenDate", "closedDate", "claimDate", "fraudScore", "fraudColor", "isTotalLoss", "source", "totalPaymentAmount", "isTurbojetPaymentFlow"]; // display claimID and lob
+                let turkishKeys = ["Dosya ID", "Dosya Numarası", "Poliçe Numarası", "Durum", "Yeniden Açma Tarihi", "Kapanma Tarihi", "Dosya Tarihi", "Suistimal Skoru", "Suistimal Rengi", "Araba Pert", "Kaynak", "Toplam Ödeme Miktarı", "Turbojet Ödemesi"];
+                let headerRow = document.createElement("tr");
+
+                // Türkçe sütun isimlerini kullanarak başlık satırını oluştur
+                turkishKeys.forEach((key, index) => {
+                    let header = document.createElement("th");
+                    header.textContent = key;
+                    headerRow.appendChild(header);
+                });
+
+                table.appendChild(headerRow);
+
+
+                let dataRow = document.createElement("tr");
+                keys.forEach(key => {
+                    let data = document.createElement("td");
+                    data.textContent = claim.dosyaData[key];
+                    dataRow.appendChild(data);
+                });
+                table.appendChild(dataRow);
+
+                result.appendChild(table);
+            } else {
+                let errorMessage = document.createElement("div");
+        errorMessage.id = "errorMessage";
+        errorMessage.textContent = "Girdiğiniz dosya numarası doğru değil.";
+        result.appendChild(errorMessage);
+            }
+        }
+
+        function searchClaim() {
+            let claimNumber = document.getElementById("claimNumber").value;
+            let claim = findClaim(claimNumber);
+            displayResult(claim);
+        }
+    </script>
+     <footer>
+        <div class="social-icons">
+            <a href="https://tr.linkedin.com/company/matiricie"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+            <a href="https://www.instagram.com/matiricie"><img src="instagram-logo.png" alt="Instagram"></a>
+        </div>
+    </footer>
+</body>
+
+</html>

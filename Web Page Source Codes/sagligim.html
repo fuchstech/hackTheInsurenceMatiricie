@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Sağlığım</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .split-container {
+            display: flex;
+            flex: 1;
+        }
+
+        .split-half {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 40px; /* Butonun içeriği etrafındaki iç boşluğu artırır */
+            margin: 10px;
+            text-decoration: none;
+            border: none;
+            border-radius: 10px; /* Butonun kenarlarını yuvarlar */
+            cursor: pointer;
+            font-size: 50px; /* Butonun metin boyutunu artırır */
+        }
+
+        .cta-button img {
+            margin-right: 10px;
+        }
+
+        .split-half img {
+            max-width: 100%; /* Resimlerin orijinal boyutunu aşmamasını sağlar */
+            height: auto; /* Genişlik değeri değiştiğinde oranlı olarak boyutu ayarlar */
+            border-radius: 5px;
+            margin-bottom: 10px;
+        }
+
+       
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="anasayfa.html">Anasayfa</a></li>
+                <li><a href="policetakip.html">Poliçe Dosya Takip</a></li>
+                <li><a href="arabamdanevar.html">Arabamda Ne Var?</a></li>
+                <li><a href="nereyetamir.html">Anlaşmalı Servis Bul</a></li>
+                <li><a href="sanalasistan.html">Sanal Asistan</a></li>
+                <li><a href="sagligim.html">Sağlığım</a></li>
+                <li><a href="hangisigorta.html">Hangi Sigorta</a></li>
+                <li><a href="iletisim2.html">İletişim</a></li>
+                <li><a href="index.html">Çıkış Yap</a></li>
+            </ul>
+        </nav>
+    </header>
+    <h1 class="section-title">Sağlığım</h1>
+    <div class="split-container">
+        <div class="split-half" style="background-color: #f0f0f0;">
+            <img src="hasta.jpg" alt="Hasta Resmi">
+            <a href="hasta-girisi.html" class="cta-button">
+                Hasta Girişi
+            </a>
+        </div>
+        <div class="split-half" style="background-color: #e0e0e0;">
+            <img src="doktor.jpg" alt="Doktor Resmi">
+            <a href="doktor-girisi.html" class="cta-button">
+                Doktor Girişi
+            </a>
+        </div>
+    </div>
+
+    <footer>
+        <div class="social-icons">
+            <a href="https://tr.linkedin.com/company/matiricie"><img src="linkedin-logo.png" alt="LinkedIn"></a>
+            <a href="https://www.instagram.com/matiricie"><img src="instagram-logo.png" alt="Instagram"></a>
+        </div>
+    </footer>
+</body>
+
+</html>

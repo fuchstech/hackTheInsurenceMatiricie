@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hasta Şikayet Formu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f0ecfb;
+            color: #333;
+        }
+
+        .container {
+            background-color: #fff;
+            width: 100%;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        h2 {
+            color: #a91100;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+        }
+
+        input[type="checkbox"],
+        select {
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 10px;
+            width: 100%;
+            border: 2px solid #d1d1d1;
+            border-radius: 5px;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            margin-top: 10px;
+        }
+
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+        }
+
+        .submit-button {
+            background-color: #d33f49;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .submit-button:hover {
+            background-color: #aa2329;
+        }
+
+        .modern-footer {
+    display: flex;
+    justify-content: space-between;
+    background-color: #a91100; /* Arka plan rengini düzenleyebilirsiniz. */
+    color: #fff; /* Metin rengini düzenleyebilirsiniz. */
+    padding: 20px;
+}
+
+.footer-column {
+    flex: 1;
+    text-align: center;
+}
+
+.footer-column a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    margin: 5px;
+    font-weight: 600;
+}
+
+.footer-column a:hover {
+    color: #66c2ff; /* Fare üzerine gelindiğinde metin rengini değiştirebilirsiniz. */
+}
+    </style>
+    <script>
+        // Checkboxu gizleme/gösterme
+        function toggleAdditionalOptions(complaint) {
+            var dropdown = document.getElementById(complaint + "-dropdown");
+            var image = document.getElementById(complaint + "-image");
+            var checkboxes = document.getElementById(complaint + "-checkboxes");
+
+            if (dropdown) {
+                dropdown.style.display = document.getElementById(complaint).checked ? "block" : "none";
+            }
+            if (image) {
+                image.style.display = document.getElementById(complaint).checked ? "block" : "none";
+            }
+            if (checkboxes) {
+                checkboxes.style.display = document.getElementById(complaint).checked ? "block" : "none";
+            }
+
+            
+        }
+
+        function redirectIfChecked() {
+    // Formu al
+    const form = document.getElementById('myForm');
+
+    // Checkboxları kontrol et
+    const gogusCheckboxes = document.querySelectorAll('input[type="checkbox"][name="sikayetler[]"][id^="gogus"]:checked');
+    const shortnessOfBreath = document.getElementById('SHORTNESS_OF_BREATH');
+    const ciltCheckbox = document.getElementById('cilt'); // Cilt checkbox
+
+    // Seçilen checkbox sayısı kontrol edilir
+    if (gogusCheckboxes.length === 0 && !shortnessOfBreath.checked && !ciltCheckbox.checked) {
+        // Eğer hiçbir göğüs checkbox'u, nefes darlığı checkbox'u veya cilt checkbox'u seçili değilse uyarı ver ve formu gönderme
+        alert('Lütfen bir göğüs seçeneği, nefes darlığı veya cilt hastalığı seçin.');
+        return false;
+    } else if (shortnessOfBreath.checked) {
+        // Eğer shortnessOfBreath checkbox'u işaretlendiyse nefesdarligi.html sayfasına yönlendir
+        window.location.href = 'nefesdarligi.html';
+    } else if (ciltCheckbox.checked) {
+        // Eğer cilt checkbox'u işaretlendiyse cilt.html sayfasına yönlendir
+        window.location.href = 'doktor_secim_cildiye.html';
+    } else {
+        // En az bir göğüs checkbox'u seçiliyse gogus.html sayfasına yönlendir
+        window.location.href = 'gogus.html';
+    }
+}
+    </script>
+
+
+</head>
+
+<body>
+    <div class="container">
+        <h2>Şikayetlerinizi Seçin</h2>
+        <form id="myForm" action="hasta_sikayet_formu.php" method="post" onsubmit="redirectIfChecked(); return false;">
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="COUGHING" value="COUGHING" onchange="toggleAdditionalOptions('COUGHING')" name="sikayetler[]"> Öksürük
+            </label>
+            <div id="COUGHING-dropdown" style="display: none; max-width:100px;">
+                <select>
+                    <option value="secilmedi" value="Seçilmedi" name="sikayetler[]">Seçiniz</option>
+                    <option value="kuru" value="Kuru" name="sikayetler[]">Kuru</option>
+                    <option value="balgamli" value="Balgamlı" name="sikayetler[]">Balgamlı</option>
+                    <option value="kanli" value="Kanlı" name="sikayetler[]">Kanlı</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" id="SHORTNESS_OF_BREATH" name="sikayetler[]" value="SHORTNESS_OF_BREATH" onchange="toggleAdditionalOptions('nefes-darligi')"> Nefes
+                Darlığı
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="WHEEZING" id="WHEEZING" name="sikayetler[]" onchange="toggleAdditionalOptions('akciger-hiriltisi')">
+                Akciğer Hırıltısı
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="CHEST_PAIN" id="gogus-agrisi" name="sikayetler[]" onchange="toggleAdditionalOptions('gogus-agrisi')"> Göğüs
+                Ağrısı
+            </label>
+            <div id="gogus-agrisi-image" style="display: none;">
+                <iframe title="Bust Base Mesh_ Obj" frameborder="0" allowfullscreen mozallowfullscreen="true" 
+                webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" 
+                xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share 
+                src="https://sketchfab.com/models/1da14edf1f4342908b428582a685cd25/embed"> </iframe>
+                <img src="https://i.hizliresim.com/4eyz91i.jpg" width="300" alt="Mide Resmi">
+            </div>
+            <div id="gogus-agrisi-checkboxes" style="display: none;">
+                <p>Hangi noktalarda ağrı hissediyorsunuz?</p>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus1" id="gogus" name="sikayetler[]"> 1. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus2" id="gogus" name="sikayetler[]"> 2. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus3" id="gogus" name="sikayetler[]"> 3. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus4" id="gogus" name="sikayetler[]"> 4. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus5" id="gogus" name="sikayetler[]"> 5. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus6" id="gogus" name="sikayetler[]"> 6. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="gogus7" id="gogus" name="sikayetler[]"> 7. Nokta
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="FATIGUE" id="FATIGUE" name="sikayetler[]" onchange="toggleAdditionalOptions('halsizlik')"> Bitkinlik
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="bayilma" id="bayilma" name="sikayetler[]" onchange="toggleAdditionalOptions('bayilma')"> Bayılma
+            </label>
+            <div id="bayilma-checkboxes" style="display: none;">
+                <p>Şikayetler başladığından beri kaç kez bayıldınız?</p>
+                <input type="number" id="bayilmasayisi" name="bayilmasayisi" value="bayilmasayisi" name="bayilmasayisi">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="kiloKaybi" id="kilo-kaybi" name="sikayetler[]" onchange="toggleAdditionalOptions('kilo-kaybi')"> Kilo Kaybı
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="ates" id="ates" name="sikayetler[]" onchange="toggleAdditionalOptions('ates')"> Ateş
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="ANXIETY" id="ANXIETY" name="sikayetler[]" onchange="toggleAdditionalOptions('anksiyete')"> Anksiyete
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="SWALLOWING_DIFFICULTY" id="SWALLOWING_DIFFICULTY" name="sikayetler[]" onchange="toggleAdditionalOptions('anksiyete')"> Yutkunma Zorluğu
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="bas" id="bas" name="sikayetler[]" onchange="toggleAdditionalOptions('bas')"> Baş İle İlgili Şikayetler 
+            </label>
+            <div id="bas-checkboxes" style="display: none;">
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basDonmesi" id="basDonmesi" name="sikayetler[]" onchange="toggleAdditionalOptions('basDonmesi')"> Baş Dönmesi
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgrisi" id="basAgrisi" name="sikayetler[]" onchange="toggleAdditionalOptions('basAgrisi')"> Baş Ağrısı
+                </label>
+            </div>
+            <div id="basAgrisi-image" style="display: none;">
+                <iframe title="Bust Base Mesh_ Obj" frameborder="0" allowfullscreen mozallowfullscreen="true" 
+                webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" 
+                xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share 
+                src="https://sketchfab.com/models/f0a99797a0894e2bae0ed51b369c6904/embed"> </iframe>
+                <div id="basAgrisi-image"> <img src="https://i.hizliresim.com/8jadjvo.jpeg" width="300px"></div>
+            
+            </div>
+            <div id="basAgrisi-checkboxes" style="display: none;">
+                <p>Hangi noktalarda ağrı hissediyorsunuz?</p>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgri1" id="basAgri1" name="sikayetler[]"> 1. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgri2" id="basAgri2" name="sikayetler[]"> 2. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgri3" id="basAgri3" name="sikayetler[]" > 3. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgri4" id="basAgri4" name="sikayetler[]"> 4. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgri5" id="basAgri5" name="sikayetler[]"> 5. Nokta
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="basAgri6" id="basAgri6" name="sikayetler[]"> 6. Nokta
+                </label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" value="karin" id="karin" name="sikayetler[]" onchange="toggleAdditionalOptions('karin')"> Karın Bölgesi İle İlgili Şikayetler
+            </label>
+            <div id="karin-checkboxes" style="display: none;">
+                <label class="checkbox-label">
+                    <input type="checkbox" value="mideBulantisi" id="mideBulantisi" name="sikayetler[]" onchange="toggleAdditionalOptions('mideBulantisi')"> Mide
+                    Bulantısı
+                </label>
+                <label class="checkbox-label">
+                    <input type="checkbox" value="karinAgrisi" id="karinAgrisi" name="sikayetler[]" onchange="toggleAdditionalOptions('karinAgrisi')"> Karın
+                    Ağrısı
+                </label>
+            </div>
+            <div id="karinAgrisi-image" style="display: none;">
+                <iframe title="Bust Base Mesh_ Obj" frameborder="0" allowfullscreen mozallowfullscreen="true" 
+                webkitallowfullscreen="true" allow="autoplay; fullscreen; xr-spatial-tracking" 
+                xr-spatial-tracking execution-while-out-of-viewport execution-while-not-rendered web-share 
+                src="https://sketchfab.com/models/1da14edf1f4342908b428582a685cd25/embed"> </iframe>
+                <img src="https://i.hizliresim.com/ngd57fh.jpg" width="300" alt="Mide Resmi">
+
+                <div id="karinAgrisi-checkboxes" style="display: none;">
+                    <p>Hangi noktalarda ağrı hissediyorsunuz?</p>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin1" name="sikayetler[]" id="karin1"> 1. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin2" name="sikayetler[]" id="karin2"> 2. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin3" name="sikayetler[]" id="karin3"> 3. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin4" name="sikayetler[]" id="karin4"> 4. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin5" name="sikayetler[]" id="karin5"> 5. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin6" name="sikayetler[]" id="karin6"> 6. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin7" name="sikayetler[]" id="karin7"> 7. Nokta
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" value="karin8" name="sikayetler[]" id="karin8"> 8. Nokta
+                    </label>
+                </div>
+            </div>
+           <br> <label class="checkbox-label">
+                <input type="checkbox" value="cilt" id="cilt" name="sikayetler[]" onchange="toggleAdditionalOptions('cilt')"> Cilt Hastalıkları
+               
+            </label>
+        </div>
+        <div id="cilt-image" style="display: none;">
+            <!-- Resim yükleme alanı -->
+            <label for="cilt-image-upload">Cilt Hastalığı Resmi Yükleyin:</label><br>
+            <input type="file" id="cilt-image-upload" name="cilt-image-upload" accept="image/*" multiple>
+
+        </div>
+
+        <div id="cilt-checkboxes" style="display: none;">
+            <p>Hangi cilt hastalıklarından şikayetçisiniz?</p>
+            <label class="checkbox-label">
+                <input type="checkbox" value="akne" id="akne" name="sikayetler[]"> Akne
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" value="egzama" id="egzama" name="sikayetler[]"> Egzama
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" value="kabarcik" id="kabarcik" name="sikayetler[]"> Kabarcık
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" value="kizariklik" id="kizariklik" name="sikayetler[]"> Kızarıklık
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" value="sertlik" id="sertlik" name="sikayetler[]">Sertlik
+            </label>
+            <label class="checkbox-label">
+                <input type="checkbox" value="diger" id="diger" name="sikayetler[]">Diğer (ben, yara izi vb.)
+            </label><br><br>
+        </div>
+ 
+        
+
+        <div class="form-group">
+            <label for="sure">Kaç gündür şikayetleriniz devam ediyor?</label>
+            <input type="text" id="sure" name="sure" required>
+        </div>
+
+        <div class="form-group">
+            <label for="eklemek">Eklemek İstedikleriniz:</label>
+            <input type="text" name="eklemek" id="eklemek">
+        </div>
+
+        <div class="form-group">
+            <button class="submit-button" onclick="redirectIfChecked()" name="gonder" type="submit">Gönder</button>      </div>
+    </form>
+    </div>
+    <footer class="modern-footer">
+   
+        <div class="footer-column">
+            <a href="hakkimizda.html">Hakkımızda</a>
+            <a href="iletisim.html">İletişim</a>
+            <a href="data-security.html">Veri Güvenliği</a>
+        </div>
+        <div class="footer-column">
+            <a href="uyelik-sozlesmesi.html">Üyelik Sözleşmesi</a>
+            <a href="kvkk-policy.html">Hasta Aydınlatma Metni</a>
+            <a href="for-doctor-kvkk-policy.html">Doktor Aydınlatma Metni</a>
+        </div>
+    </footer>
+</body>
+
+</html>
